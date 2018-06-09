@@ -1,3 +1,6 @@
+Effect showcase: 
+https://puu.sh/ABhfJ/9f56d9289f.gif
+
 This is a extremely simple 2D effect which is widely used in mobile games to give elements a nice highlighting to catch the players eye.
 
 This was just an attempt to do with only with shaders to avoid using a separate texture for the light sweep.
@@ -86,6 +89,8 @@ You obviously have to set the uniform each tick though, but you don't need to ge
 And don't forget to set the program.
 
 The fragment shader:
+
+https://www.shadertoy.com/view/XsGBzW this was my initial test and i moved from there https://www.shadertoy.com/view/XsGBzW
 
 varying vec4 v_fragmentColor;
 varying vec2 v_texCoord;
