@@ -1,5 +1,5 @@
 Effect showcase: 
-https://puu.sh/ABhfJ/9f56d9289f.gif
+![Alt Text](https://puu.sh/ABhfJ/9f56d9289f.gif)
 
 This is a extremely simple 2D effect which is widely used in mobile games to give elements a nice highlighting to catch the players eye.
 
