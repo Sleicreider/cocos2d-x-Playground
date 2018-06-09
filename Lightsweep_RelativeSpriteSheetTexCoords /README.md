@@ -94,7 +94,7 @@ And don't forget to set the program.
 
 The fragment shader:
 
-https://www.shadertoy.com/view/XsGBzW this was my initial test and i moved from there https://www.shadertoy.com/view/XsGBzW
+https://www.shadertoy.com/view/XsGBzW this was my initial test and i moved from there.
 
 varying vec4 v_fragmentColor;
 varying vec2 v_texCoord;
