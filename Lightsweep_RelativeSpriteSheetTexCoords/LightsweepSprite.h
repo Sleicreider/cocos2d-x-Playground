@@ -19,7 +19,7 @@ private:
 
 
     //=============================================================================================
-    // General functoins
+    // General functions
 public:
     void SetInterval(float interval, bool immediate_swipe = true);
     void SetSwipesPerInterval(int8_t swipes);
@@ -32,7 +32,7 @@ private:
 
     
     //=============================================================================================
-    // Delegate functoins
+    // Delegate functions
 private:
     void OnSwipeFinished();
     void OnIntervalFinished();
