@@ -96,7 +96,8 @@ The fragment shader:
 
 https://www.shadertoy.com/view/XsGBzW this was my initial test and i moved from there.
 
-varying vec4 v_fragmentColor;
+
+`varying vec4 v_fragmentColor;
 varying vec2 v_texCoord;
 
 uniform vec2 sprite_sheet_v1;
@@ -131,7 +132,6 @@ void main()
 	
 	gl_FragColor = vec4(vec3(texture_color.rgb) + vec3(color),texture_color.a);
 }
-
 
 
 
