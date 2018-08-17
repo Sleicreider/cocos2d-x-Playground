@@ -13,73 +13,56 @@ LightsweepSprite::LightsweepSprite()
 
 void LightsweepSprite::OnInit()
 {
-	FSprite::OnInit();
+    glp = new GLProgram();
+    glp->autorelease();
 
-	glp = new GLProgram();
+    if (!glp->initWithFilenames("lightsweep.vsh", "lightsweep.fsh"))
+    {
+        DEBUG_BREAK;
+    }
 
-	glp->autorelease();
-
-	CCLOG("TEST");
-
-	if (!glp->initWithFilenames("lightsweep.vsh", "lightsweep.fsh"))
-	{
-		DEBUG_BREAK;
-	}
-
-	glp->bindAttribLocation(GLProgram::ATTRIBUTE_NAME_POSITION, GLProgram::VERTEX_ATTRIB_POSITION);
-	glp->bindAttribLocation(GLProgram::ATTRIBUTE_NAME_COLOR, GLProgram::VERTEX_ATTRIB_COLOR);
-	glp->bindAttribLocation(GLProgram::ATTRIBUTE_NAME_TEX_COORD, GLProgram::VERTEX_ATTRIB_TEX_COORD);
-	glp->link();
-	glp->updateUniforms();
-
-	auto rect = getTextureRect();
-	
-	auto sprite_sheet_pos = rect.origin;
-	auto texture_size = rect.size;
-	auto sprite_sheet_texture = getTexture();
-	auto tex_width = getTexture()->getPixelsWide();
-	auto tex_height = getTexture()->getPixelsHigh();
-
-	float pos_x = sprite_sheet_pos.x / tex_width;
-	float pos_y = sprite_sheet_pos.y / tex_height;
-	float width = texture_size.width / tex_width;
-	float height = texture_size.height / tex_height;
-
-	float x1 = pos_x;
-	float x2 = pos_x + width;
-	float y1 = pos_y + height;
-	float y2 = pos_y;
-
-	// const float t_progress = particle.progress_;
-	// const float t_end = travel_duration_;
-	// const Vec2 pos_start = getPosition();
-	// const Vec2 pos_target = particle_target_position_;
-
-	// const float x = t_progress * ((pos_target.x - pos_start.x) / t_end) + pos_start.x;
-	// const float y = t_progress * ((pos_target.y - pos_start.y) / t_end) + pos_start.y;
-
-	// glp->use();
+    glp->bindAttribLocation(GLProgram::ATTRIBUTE_NAME_POSITION, GLProgram::VERTEX_ATTRIB_POSITION);
+    glp->bindAttribLocation(GLProgram::ATTRIBUTE_NAME_TEX_COORD, GLProgram::VERTEX_ATTRIB_TEX_COORD);
+    glp->link();
+    glp->updateUniforms();
     setGLProgram(glp);
 
-    //glUseProgram(glp->getProgram());
+    auto rect = getTextureRect();
+    auto sprite_sheet_pos = rect.origin;
+    auto texture_size = rect.size;
+    auto sprite_sheet_texture = getTexture();
+    auto tex_width = sprite_sheet_texture->getPixelsWide();
+    auto tex_height = sprite_sheet_texture->getPixelsHigh();
 
-	glprogramstate_ = GLProgramState::getOrCreateWithGLProgram(glp);
-	setGLProgramState(glprogramstate_);
+    float pos_x = sprite_sheet_pos.x / tex_width;
+    float pos_y = sprite_sheet_pos.y / tex_height;
+    float width = texture_size.width / tex_width;
+    float height = texture_size.height / tex_height;
 
-	auto loc = glp->getUniformLocation("SpriteSheetInfo");
-	glprogramstate_->setUniformVec4(
-		loc, Vec4(sprite_sheet_pos.x, sprite_sheet_pos.y, texture_size.width, texture_size.height));
+    float x1 = pos_x;
+    float x2 = pos_x + width;
+    float y1 = pos_y;
+    float y2 = pos_y + height;
 
-	loc = glGetUniformLocation(glp->getProgram(), "SpriteSheetSize");
-	glprogramstate_->setUniformVec2(loc, Vec2(tex_width, tex_height));
+    glprogramstate_ = GLProgramState::getOrCreateWithGLProgram(glp);
+    setGLProgramState(glprogramstate_);
 
-	gl_lerp_loc_ = glGetUniformLocation(glp->getProgram(), "lerp_val");
-	glprogramstate_->setUniformFloat(gl_lerp_loc_, 0.f);
-	//__gl_error_code = glGetError();
-	//       if (__gl_error_code != GL_NO_ERROR)
-	//       {
-	//           CCLOG("error: 0x%x  : ", (int)__gl_error_code);
-	//       }
+    auto loc = glGetUniformLocation(glp->getProgram(), "sprite_sheet_v1");
+    glprogramstate_->setUniformVec2(loc, Vec2(x1, y1));
+
+    loc = glGetUniformLocation(glp->getProgram(), "sprite_sheet_v2");
+    glprogramstate_->setUniformVec2(loc, Vec2(x2, y2));
+
+    gl_lerp_loc_ = glGetUniformLocation(glp->getProgram(), "lerp_val");
+    glprogramstate_->setUniformFloat(gl_lerp_loc_, 0.f);
+
+    //auto __gl_error_code = glGetError();
+    //       if (__gl_error_code != GL_NO_ERROR)
+    //       {
+    //           CCLOG("error: 0x%x  : ", (int)__gl_error_code);
+    //       }
+
+
 
 	FrameworkScene::GetActiveScene()->AddTickable(timeframe_);
 	FrameworkScene::GetActiveScene()->AddTickable(delegate_);
