@@ -63,8 +63,6 @@ namespace FFilesystem
     {
         //Android and ios not tested
 #if CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_IOS
-        //readlink
-            //dirname
         char cwd[FILENAME_MAX];
         if(!getcwd(cwd, FILENAME_MAX))
         {
@@ -98,5 +96,14 @@ namespace FFilesystem
         return std::filesystem::is_regular_file(std::filesystem::path(path.String()));
 #endif
     }
+
+	bool CreateDirectory(const Path& path)
+	{
+#if CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_IOS
+        return mkdir(path.String().c_str(), 0777) == 0;
+#else
+        return std::filesystem::create_directory(std::filesystem::path(path.String()));
+#endif
+	}
 };
 
