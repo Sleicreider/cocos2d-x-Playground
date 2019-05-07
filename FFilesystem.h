@@ -1,11 +1,15 @@
 #pragma once
 
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
+#define FILESYSTEM_SUPPORT
+#endif
+
 //only dev machines need filesystem
-#if CC_TARGET_PLATFORM == CC_PLATFORM_MAC
+#ifndef FILESYSTEM_SUPPORT
     #include <sys/stat.h>
     #include <sys/types.h>
     #include <unistd.h>
-#elif CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
+#else
     #include <filesystem>
 #endif
 
@@ -62,7 +66,7 @@ namespace FFilesystem
     Path CurrentPath()
     {
         //Android and ios not tested
-#if CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_IOS
+#ifndef FILESYSTEM_SUPPORT
         char cwd[FILENAME_MAX];
         if(!getcwd(cwd, FILENAME_MAX))
         {
@@ -78,7 +82,7 @@ namespace FFilesystem
 
     bool IsDirectory(const Path& path)
     {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_IOS
+#ifndef FILESYSTEM_SUPPORT
         struct stat st;
         return stat(path.String().c_str(), &st) == 0 ? S_ISDIR(st.st_mode) : false;
 #else
@@ -89,7 +93,7 @@ namespace FFilesystem
     bool IsRegularFile(const Path& path)
     {
         //ios and android is untestet
-#if CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_IOS
+#ifndef FILESYSTEM_SUPPORT
         struct stat st;
         return stat(path.String().c_str(), &st) == 0 ? S_ISREG(st.st_mode) : false;
 #else
@@ -99,7 +103,7 @@ namespace FFilesystem
 
 	bool CreateDirectory(const Path& path)
 	{
-#if CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_IOS
+#ifndef FILESYSTEM_SUPPORT
         return mkdir(path.String().c_str(), 0777) == 0;
 #else
         return std::filesystem::create_directory(std::filesystem::path(path.String()));
