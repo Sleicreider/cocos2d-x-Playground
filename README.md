@@ -18,5 +18,9 @@ therefore it uses std::filesystem internally for all other platforms and platfor
 specific stuff for osx only.
 
 Currently only supports filesystem::path and its operations
-IsRegularFile, IsDirectory and GetCurrentWorkingDirectory, I might add
+IsRegularFile, IsDirectory and GetCurrentWorkingDirectory, CreateDirectory I might add
 additional functionality to it if necessary until apple supports <filesystem> themself.
+  
+Seems like the current Android NDK also doesn't support <filesystem>.
+
+Intersting additional features would tmp OS path.
